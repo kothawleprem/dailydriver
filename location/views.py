@@ -2,15 +2,17 @@ from django.shortcuts import render
 from geopy.geocoders import Nominatim
 from .utils import get_geo
 from requests import get
+import publicip
 
 
 def for_location(request):
     geolocator = Nominatim(user_agent="location")
 
     #ip = '192.168.0.105'
-    ip = get('https://api.ipify.org').text
-    print('My public IP address is: {}'.format(ip))
-    
+    #ip = get('https://api.ipify.org').text
+    #print('My public IP address is: {}'.format(ip))
+    #ip = ("",publicip.get(),"")
+    ip = get('http://ip.42.pl/raw').text
     
     country,city,lat,lon = get_geo(ip)
    
