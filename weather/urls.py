@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from djweather import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('location.urls',namespace='location'))
+    #path('',views.home,name='home')
 ]
