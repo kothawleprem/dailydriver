@@ -28,8 +28,11 @@ def for_location(request):
 
     # ulocation = geolocator.geocode(city)
     # print('###',ulocation)
+   # alocation = request.remote_addr
+    
     context = {
         'ulocation' : ulocation,
+    #    'alocation' : alocation,
     }
     return render(request, 'location/main.html',context)
 # Create your views here.
