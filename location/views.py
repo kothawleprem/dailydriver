@@ -14,6 +14,9 @@ def for_location(request):
 
     geo_lookup = GeoLookup("582179b24ab7f5f07d71c6fb0be3fc7c")
     ulocation = geo_lookup.get_own_location()
+    city = ulocation["city"]
+    zip = ulocation["zip"]
+    ip = ulocation["ip"]
     print(ulocation)
     #ip = '192.168.0.105'
     #ip = get('https://api.ipify.org').text
@@ -28,11 +31,13 @@ def for_location(request):
 
     # ulocation = geolocator.geocode(city)
     # print('###',ulocation)
-   # alocation = request.remote_addr
-    
+    # alocation = request.remote_addr
     context = {
-        'ulocation' : ulocation,
-    #    'alocation' : alocation,
+        'city' : city,
+        'zip' : zip,
+        'ip' :ip,
+        #'ulocation' : ulocation,
+    #   'alocation' : alocation,
     }
     return render(request, 'location/main.html',context)
 # Create your views here.
