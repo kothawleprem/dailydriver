@@ -1,6 +1,6 @@
 from django import forms
 
-class LocationForm(forms.Form):
-    text = forms.CharField(max_length=45,
-        widget=forms.TextInput(
-            attrs={'class':'form-control','placeholder':'Enter YOur City','aria-label':'Location','aria-describeby':'add-btn'}))
+news_category = [('general','General'),('sports','Sports'),('technology','Technology')]
+
+class CategoryForm(forms.Form):
+    types = forms.CharField(label='Select Category for News', max_length=100,widget=forms.Select(choices=news_category),required=False)

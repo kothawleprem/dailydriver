@@ -1,4 +1,5 @@
 {% load mathfilters %}
+{% load crispy_forms_tags %}
 <!doctype html>
 <html lang="en">
 
@@ -49,28 +50,40 @@
     <h3 style="font-family: 'Exo 2', sans-serif;">Enter Location Manually</h3>
 <form method="GET">
     <div class="row">
-    <div class="col-md-6">
-        <label for="city"></label>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="city" value="{{ request.GET.city }}" placeholder="Enter City" name="city" >
-    </div>
-    <div class="col-md-6">
-    </br>
-    <input type="submit" value="Get Weather" class="btn btn-warning" />
-    </div>
+        <div class="col-md-6">
+            <label for="city"></label>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default" id="city" value="{{ request.GET.city }}"
+                placeholder="Enter City" name="city">
+        </div>
+        <div>
+                        <label for="category"></label>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                            id="newscategory" value="{{ request.GET.category }}" placeholder="Enter Category" name="category">
+        </div>
+        <div class="col-md-6">
+            </br>
+
+            <input type="submit" value="Update City" class="btn btn-warning" />
+        </div>
     </div>
 </form>
+
+
+
+
 
 <center>
     <h1 style="font-family: 'Recursive', sans-serif;">News</h1>
 </center>
 
-{% for section in news_final %}
+{% for section in contents %}
 {% for content in section %}
 <div class="container">
         {% if 'https' in content %}
         <a href=" {{content}}" class="btn btn-primary" target="_blank">View Full News</a>
         
-        {% elif content|length < 120 %} 
+        {% elif '->' in content %} 
         <h4 style="font-family: 'Playfair Display', serif;">{{content}}</h5>
         {% else %}
         <h5 style="font-family: 'Exo 2', sans-serif;">{{content}}</h5>
