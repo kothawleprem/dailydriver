@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from ipstack import GeoLookup
 import requests
+from functools import partial
 
 from .models import Location
 from django.views.decorators.http import require_POST
@@ -59,13 +60,13 @@ def home(request):
     pressure = json_data['main']['pressure']
     humidity = json_data['main']['humidity']
 
-    # geolocator = Nominatim(user_agent="techbayindia@gmail.com")
-    # geocode = partial(geolocator.geocode, language="en")
-    # location = str(geocode(city))
-    # c = list(map(str, location.split(",")))
-    # country = c[-1].strip()
-    # print(country)
-    country = "India"
+    myapi = f"https://nominatim.openstreetmap.org/search?city=<{city}>&format=json"
+    # From the api we get data.
+    json_data = requests.get(myapi).json()
+    part = json_data[0]
+    display_name = part["display_name"]
+    c_list = list(map(str,display_name.split(",")))
+    country = c_list[-1].strip()
 
     # Currently testing for 4 countries can do for 46 more.
     code = ""
