@@ -45,6 +45,7 @@ def home(request):
         ulocation = geo_lookup.get_own_location()
         # print(ulocation)
         city = ulocation["city"]
+
         # zip = ulocation["zip"]
         # ip = ulocation["ip"]
         api = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid=5bc57ba9bc106c9844915b5178ee10ad"
@@ -58,12 +59,13 @@ def home(request):
     pressure = json_data['main']['pressure']
     humidity = json_data['main']['humidity']
 
-    geolocator = Nominatim(user_agent="geoapiExercises")
-    geocode = partial(geolocator.geocode, language="en")
-    location = str(geocode(city))
-    c = list(map(str, location.split(",")))
-    country = c[-1].strip()
-    print(country)
+    # geolocator = Nominatim(user_agent="techbayindia@gmail.com")
+    # geocode = partial(geolocator.geocode, language="en")
+    # location = str(geocode(city))
+    # c = list(map(str, location.split(",")))
+    # country = c[-1].strip()
+    # print(country)
+    country = "India"
 
     # Currently testing for 4 countries can do for 46 more.
     code = ""
