@@ -14,28 +14,6 @@ from functools import partial
 import requests
 from geopy.geocoders import Nominatim
 
-# news_final = []
-# html_text = requests.get('https://www.ndtv.com/india').text
-# soup = BeautifulSoup(html_text,'lxml')
-# articles = soup.find_all('div',class_='news_Itm')
-# for article in articles:
-#     try:
-#         news_initial = []
-#         content = article.find('div',class_='news_Itm-cont')
-#         heading = content.find('h2',class_='newsHdng').text
-#         link = content.find('h2',class_='newsHdng').a['href']
-#         brief = content.find('p',class_='newsCont').text
-#         news_initial.append(heading)
-#         news_initial.append(brief)
-#         news_initial.append(link)
-#         news_final.append(news_initial)
-#         # print(f" Heading : {heading}")
-#         # print(f" Link    : {link}")
-#         # print(f" Brief   : {brief}")
-#         # print("")
-#     except:
-#         print("")    
-#############################################################
 def home(request):
     city = ""
     if 'city' in request.GET:
@@ -118,7 +96,11 @@ def home(request):
         mycategory = "General"
     else:
         mycategory = category.capitalize()
-
+    
+    if country == "United Kingdom":
+        country = "uk"
+    if country == "United States":
+        country = 'us'
     html_text = requests.get(f'https://www.worldometers.info/coronavirus/country/{country}').text
     soup = BeautifulSoup(html_text,'lxml')
     main_counter = soup.find_all('div',id='maincounter-wrap')
@@ -177,7 +159,7 @@ def home(request):
         'cases' : cases,
         'deaths' : deaths,
         'recovered' : recovered,
-        'country' : country,
+        'country' : country.upper(),
         'description' : description,
         'location' : location,
         'time' : time,
