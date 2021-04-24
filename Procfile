@@ -1,2 +1,1 @@
-web: gunicorn weather.wsgi
-clock: python clock.py
+web: gunicorn autotodo.wsgi

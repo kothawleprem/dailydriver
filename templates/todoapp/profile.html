@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Profile {% endblock title %}
+{% load crispy_forms_tags %}
+{% block body %}
+<center>
+    {% comment %} <h3>{{ user.username }}</h3>
+    <h3>{{ user.email }}</h3>
+    <h3>{{ user.profile.category }}</h3> {% endcomment %}
+    <div class="container">
+    <form action="/profile" method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{ u_form|crispy }}
+    {{ p_form|crispy }}
+    <input type="submit" value="Update Profile">
+    </form>
+    </div>
+</center>
+{% endblock body %}

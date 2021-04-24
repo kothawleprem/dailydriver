@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container">
+  <center>
+        <h1><i>"{{affirmation}}"</i></h1>
+    </center>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <center>
+                    <h1 style="font-family: 'Recursive', sans-serif;">Weather</h1>
+                </center>
+                <div class="card" style="border-radius:10px; box-shadow: 10px 10px 8px grey;">
+                    <h2 style="font-family: 'Recursive', sans-serif;">City : {{city}}</h2>
+                    <h2 style="font-family: 'Playfair Display', serif;">Current temperature : {{temp}}
+                        <span>&#176;</span>C
+                        </br> Max temperature: {{max_temp}} <span>&#176;</span>C
+                        Min temperature : {{min_temp}} <span>&#176;</span>C </br>
+                        Feels like : {{feels_like}} <span>&#176;</span>C
+                        Pressure : {{pressure}} "Hg </br>Humidity : {{humidity}} % </h2>
+                </div>
+                <!-- <h1>Calendar Details</h1>
+    
+        {% for i in ourlist %}
+        {% for j in i %}
+        <h3> Summary : {{j}}</h3>
+        <h3> Start time : {{j}}</h3>
+        <h3> End time : {{j}}</h3>
+        <h3> Link : {{j}}</h3>
+    {% endfor %}
+    {% endfor %} -->
+                <br><br>
+                <div class="card" style="border-radius:10px; box-shadow: 10px 10px 8px grey;">
+                    <h3 style="font-family: 'Exo 2', sans-serif;">Enter Location and Category Manually</h3>
+                    <form method="GET">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="city"></label>
+                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-default" id="city"
+                                    value="{{ request.GET.city }}" placeholder="Enter City" name="city">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="category"></label>
+                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-default" id="newscategory"
+                                    value="{{ request.GET.category }}" placeholder="Enter Category" name="category">
+                            </div>
+                            <p><strong>| General |</strong><strong>| Business |</strong><strong>| Entertainment
+                                    |</strong><strong>| Health |</strong><strong>| Science |</strong><strong>| Sports
+                                    |</strong><strong>| Technology |</strong></p>
+                            <div class="col-md-6">
+
+                                <input type="submit" value="Update Details" class="btn btn-warning" />
+                                <br>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <br>
+                <center>
+                    <h1 style="font-family: 'Recursive', sans-serif;">Covid-19 Stats</h1>
+                </center>
+                <div class="card" style="border-radius:10px; box-shadow: 10px 10px 8px grey;">
+                    <h2>Country : {{country}}</h2>
+                    <h4>Total Cases : {{cases}} </h4>
+                    <h4>Total Recovered : {{recovered}}</h4>
+                    <h4>Total Deaths : {{deaths}}</h4>
+
+                </div>
+                <br>
+                <br>
+{% if todos|length == 0 %}
+  <div class="alert alert-info" >
+  <p>Hurray! No To-Do's!!</p>
+  </div>
+  {% else %}
+  <table class="table">
+  <thead >
+  <tr>
+  <th>#</th>
+  <th>Title</th>
+  <th>Status</th>
+  <th>Priority</th>
+  <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  
+   {% for todo in todos %}
+   <tr>
+  <td>{{forloop.counter}}</td>
+  <td>{{todo.title}}</td>
+  <td>{{todo.status}}</td>
+  <td>{{todo.priority}}</td>
+  <td><a href="/delete_todo/{{todo.id}}" class="btn btn-primary">delete</a>
+  {% if todo.status == 'P' %}
+  <a href="/change_status/{{todo.id}}/C" class="btn btn-primary">Complete</a>
+  {% else %}
+  <a href="/change_status/{{todo.id}}/P" class="btn btn-primary">Pending</a></td>
+  {% endif %}
+  </tr>
+  {% endfor %}
+  
+  </tbody>
+  </table>
+  
+  <form action='/emailme' method='post'>
+                           
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <i class="fas fa-email"></i>
+        </div>
+        <input type="text" class="form-control" name="uemail" placeholder="Enter Email Here"> 
+    </div>
+    <button type="submit" class="comment_submit btn-lg" >Send Mail!</button> 
+</form>
+{% endif %}
+  <h1>To-Do</h1>
+  <form action="/add_todo" method="POST">
+  {% csrf_token %}
+  {{ form.as_p}}
+  <input type="submit" value="ADD">
+  </form>
+
+
+            </div>
+
+            <br><br>
+            <div class="col-md-6">
+                <center>
+                    <h1 style="font-family: 'Recursive', sans-serif;">Cricket Updates</h1>
+                </center>
+                <div class="card" style="border-radius:10px; box-shadow: 10px 10px 8px grey;">
+                    <h2>{{description}}</h2>
+                    <h5>{{toss}}</h5>
+                    <h5>{{location}} : {{time}}</h5>
+                    <h5>{{team1_name}} : {{team1_score}}</h5>
+
+                    <h5>{{team2_name}} : {{team2_score}}</h5>
+
+                    <a href=" {{link}}" class="btn btn-warning" target="_blank">View Full Scorecard</a>
+                </div>
+                <br><br>
+                <div class="card" style="border-radius:10px; box-shadow: 10px 10px 8px grey;">
+                    <center>
+                        <h1 style="font-family: 'Recursive', sans-serif;">News - {{category}}</h1>
+                    </center>
+
+                    {% for section in contents %}
+                    {% for content in section %}
+
+                    <div class="container">
+                        {% if 'https' in content %}
+                        <a href=" {{content}}" class="btn btn-warning" target="_blank">View Full News</a>
+
+                        {% elif '->' in content %}
+                        <h4 style="font-family: 'Playfair Display', serif;">{{content}}</h5>
+                            {% else %}
+                            <h5 style="font-family: 'Exo 2', sans-serif;">{{content}}</h5>
+                            {% endif %}
+                    </div>
+                    {% endfor %}
+                    </br>
+                    {% endfor %}
+                </div>
+                <br><br>
+            </div>
+{% endblock body %}
