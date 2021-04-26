@@ -2,17 +2,40 @@
 {% block title %} Profile {% endblock title %}
 {% load crispy_forms_tags %}
 {% block body %}
-<center>
-    {% comment %} <h3>{{ user.username }}</h3>
-    <h3>{{ user.email }}</h3>
-    <h3>{{ user.profile.category }}</h3> {% endcomment %}
-    <div class="container">
+<div class="container">
+ <div  style="background: linear-gradient(to top right, #ccffcc 0%, #ffff00 100%);border-radius: 10px;box-shadow: 10px 10px 5px grey;;">
+    <div class="row">
+      <div class="col-lg-6 col-md-12" style="background-color: white;">
+        <div class="about-image">
+        <center>
+          <img style="width:80%;" src="https://image.freepik.com/free-vector/login-concept-illustration_114360-739.jpg" alt="About us" class="img-fluid" >
+        </center>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 about-title">
+        <center>
+          <h2 class="text-uppercase pt-5">
+            <span>Update Profile!</span>
+            
+          </h2>
+          <div class="paragraph py w-75">
     <form action="/profile" method="post" enctype='multipart/form-data'>
     {% csrf_token %}
+     <fieldset class="form-group">
+            <legend class="border-bottom mb-4"></legend>
     {{ u_form|crispy }}
     {{ p_form|crispy }}
-    <input type="submit" value="Update Profile">
+    </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update Profile</button>
+            <small class="text-muted ml-2">
+            </small>
+
+        </div>
     </form>
+          
+
+        
     </div>
-</center>
+  </div>
 {% endblock body %}

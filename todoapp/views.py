@@ -155,17 +155,24 @@ def home(request):
         team2_name = ''
         team2_score = ''
 
+        
         try:
             toss = section.find('div',class_="scr_dt-red @*scr-inf_tx*@").text
-            block = section.find_all('div',class_='scr_tm-wrp')
-            team1_block = block[0]
-            team1_name = team1_block.find('div',class_='scr_tm-nm').text
+        except:
+            toss = "Toss not Available Yet!"
+        block = section.find_all('div',class_='scr_tm-wrp')
+        team1_block = block[0]
+        team1_name = team1_block.text
+        try:
             team1_score = team1_block.find('span',class_='scr_tm-run').text
-            team2_block = block[1]
-            team2_name = team2_block.find('div',class_='scr_tm-nm').text
+        except:
+            team1_score = "Score not Available Yet!"
+        team2_block = block[1]
+        team2_name = team2_block.text
+        try:
             team2_score = team2_block.find('span',class_='scr_tm-run').text
         except:
-            print("Some Error Found")
+            team2_score = "Score not Available Yet!"
         url = "https://www.affirmations.dev/"
         myjson= requests.get(url).json()
         affirmation = myjson['affirmation']
@@ -190,10 +197,10 @@ def home(request):
             'location' : location,
             'time' : time,
             'toss' : toss,
-            'team1_name' : team1_name,
-            'team1_score' : team1_score,
-            'team2_name' : team2_name,
-            'team2_score' : team2_score,
+            'team1_name' : team1_name.strip(),
+            'team1_score' : team1_score.strip(),
+            'team2_name' : team2_name.strip(),
+            'team2_score' : team2_score.strip(),
             'link' : link,
             'affirmation' : affirmation,
         }

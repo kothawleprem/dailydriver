@@ -2,14 +2,39 @@
 {% block title %} Sign Up {% endblock title %}
 {% load crispy_forms_tags %}
 {% block body %}
-<div class="container">
-<center>
+ <div  style="background: linear-gradient(to top right, #ccffcc 0%, #ffff00 100%);border-radius: 10px;box-shadow: 10px 10px 5px grey;;">
+    <div class="row">
+      <div class="col-lg-6 col-md-12" style="background-color: white;">
+        <div class="about-image">
+        <center>
+          <img style="width:80%;" src="https://image.freepik.com/free-vector/login-concept-illustration_114360-739.jpg" alt="About us" class="img-fluid" >
+        </center>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 about-title">
+        <center>
+          <h2 class="text-uppercase pt-5">
+            <span>Sign Up</span>
+            
+          </h2>
+          <div class="paragraph py w-75">
 <form action="/signup" method="post">
     {% csrf_token %}
+    <fieldset class="form-group">
+            <legend class="border-bottom mb-4"></legend>
     {{form|crispy }}
-    <input type="submit" value="Create Account">
+   </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Login</button>
+            <small class="text-muted ml-2">
+            </small>
+
+        </div>
     </form>
-    </center>
-    </div> 
+          
+
+        
+    </div>
+  </div>
 
 {% endblock body %}

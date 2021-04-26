@@ -74,6 +74,10 @@
                 </div>
                 <br>
                 <br>
+  <center><h1 style="font-family: 'Recursive', sans-serif;">To-Do</h1></center>          
+ <div class="card" style="border-radius:10px; box-shadow: 10px 10px 8px grey;">
+ <br>
+ <div class="container">
 {% if todos|length == 0 %}
   <div class="alert alert-info" >
   <p>Hurray! No To-Do's!!</p>
@@ -97,15 +101,15 @@
   <td>{{todo.title}}</td>
   <td>{{todo.status}}</td>
   <td>{{todo.priority}}</td>
-  <td><a href="/delete_todo/{{todo.id}}" class="btn btn-primary">delete</a>
+  <td><a href="/delete_todo/{{todo.id}}" class="btn btn-warning">Delete</a>
   {% if todo.status == 'P' %}
-  <a href="/change_status/{{todo.id}}/C" class="btn btn-primary">Complete</a>
+  <a href="/change_status/{{todo.id}}/C" class="btn btn-warning">Complete</a>
   {% else %}
-  <a href="/change_status/{{todo.id}}/P" class="btn btn-primary">Pending</a></td>
+  <a href="/change_status/{{todo.id}}/P" class="btn btn-warning">Pending</a></td>
   {% endif %}
   </tr>
   {% endfor %}
-  
+ 
   </tbody>
   </table>
   
@@ -118,18 +122,23 @@
         </div>
         <input type="text" class="form-control" name="uemail" placeholder="Enter Email Here"> 
     </div>
-    <button type="submit" class="comment_submit btn-lg" >Send Mail!</button> 
+    <button type="submit" class="btn btn-warning" >Send Mail!</button> 
 </form>
 {% endif %}
-  <h1>To-Do</h1>
+<center><h3 style="font-family: 'Recursive', sans-serif;">Add a Task!</h3></center>
+  
   <form action="/add_todo" method="POST">
   {% csrf_token %}
-  {{ form.as_p}}
-  <input type="submit" value="ADD">
+  {{ form|crispy }}
+  <br>
+  <input type="submit" class="btn btn-warning" value="ADD">
   </form>
 
 
             </div>
+            </div>
+            <br>
+</div>
 
             <br><br>
             <div class="col-md-6">
