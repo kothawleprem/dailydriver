@@ -12,7 +12,7 @@ from django.core.mail import EmailMultiAlternatives
 #----------------------
 from ipstack import GeoLookup
 import requests
-from functools import partial
+# from functools import partial
 
 # from .models import Location
 from django.views.decorators.http import require_POST
