@@ -1,29 +1,23 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 from todoapp.forms import TodoForm, UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-
 from todoapp.models import Todo, Profile
-from django.contrib.auth.decorators import login_required
+
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-#----------------------
+
 from ipstack import GeoLookup
 import requests
-# from functools import partial
 
-# from .models import Location
-from django.views.decorators.http import require_POST
-# from . forms import CategoryForm
-import os
 
 from bs4 import BeautifulSoup
 
-from functools import partial
-import requests
-from geopy.geocoders import Nominatim
+
 
 
 @login_required(login_url='user_login')
@@ -68,13 +62,8 @@ def home(request):
         display_name = part["display_name"]
         c_list = list(map(str,display_name.split(",")))
         co = c_list[-1].strip()
-        # translator = google_translator()
-        # to_lang = 'en'
-        # con = translator.translate(co,lang_tgt=to_lang)
-        # country = con.rstrip()
         country = co
         print(country)
-        # Currently testing for 4 countries can do for 46 more.
         code = ""
         mylist = [["United Arab Emirates","ae"],["United States", "us"],["Australia", "au"],  ["India", "in"],["Argentina","ar"], ["Austria","at"],["Beligum","be"], ["Bulgaria","bg"], ["Brazil","br"], ["Canada","ca"], ["China","cn"], ["Colombia","co"], ["Cuba","cu"], ["Czechia","cz"],["Egypt","eg"], ["France","fr"],["United Kingdom", "gb"], ["Greece","gr"], ["Hong Kong","hk"], ["Hungry","hu"], ["Indonesia","id"], ["Ireland","ie"], ["Israel","il"], ["Italy","it"], ["Japan","jp"], ["Korea","kr"], ["Lithuania","lt"], ["Latvia","lv"], ["Morocco","ma"], ["Mexico","mx"], ["Malaysia","my"], ["Nigeria","ng"], ["Netherlands","nl"], ["Norway","no"], ["New Zealand","nz"], ["Philippines","ph"], ["Poland","pl"], ["Portugal","pt"], ["Romania","ro"], ["rs"],  ["Rusia","ru"], ["Saudi Arabia","sa"], ["Sweden","se"], ["Singapore","sg"], ["Slovenia","si"], ["Slovakia","sk"], ["Thailand","th"], ["Turkey","tr"], ["Taiwan","tw"], ["Ukraine","ua"], ["Venezuela","ve"], ["South Africa","za"]]
 
@@ -113,11 +102,6 @@ def home(request):
             mycategory = "General"
         else:
             mycategory = category.capitalize()
-    
-        if category == "":
-            mycategory = "General"
-        else:
-            mycategory = category.capitalize()
         
         if country == "United Kingdom":
             country = "uk"
@@ -137,10 +121,7 @@ def home(request):
         recovered_number = recovered_counter.find('div',class_='maincounter-number')
         recovered = recovered_number.find('span').text  
 
-        description = ''
-        location = ''
-        time = ''
-        link = ''
+
         html_text = requests.get('https://sports.ndtv.com/cricket/live-scores').text
         soup = BeautifulSoup(html_text, "html.parser")
         sect = soup.find_all('div',class_='sp-scr_wrp')
@@ -149,11 +130,7 @@ def home(request):
         location = section.find('span',class_='location').text
         time = section.find('div',class_='scr_dt-red').text
         link = "https://sports.ndtv.com/" + section.find('a',class_='scr_ful-sbr-txt').get('href')
-        toss = ''
-        team1_name = ''
-        team1_score = ''
-        team2_name = ''
-        team2_score = ''
+
 
         
         try:
@@ -173,9 +150,11 @@ def home(request):
             team2_score = team2_block.find('span',class_='scr_tm-run').text
         except:
             team2_score = "Score not Available Yet!"
+
         url = "https://www.affirmations.dev/"
         myjson= requests.get(url).json()
         affirmation = myjson['affirmation']
+        
         context = {
             'form' : form,
             'todos' : todos,
