@@ -121,7 +121,7 @@ USE_TZ = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "chartbayindia@gmail.com"
+EMAIL_HOST_USER = "dailydriverindia@gmail.com"
 EMAIL_HOST_PASSWORD = "mops@123"
 
 

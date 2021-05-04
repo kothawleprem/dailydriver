@@ -122,8 +122,12 @@
         </div>
         <input type="text" class="form-control" name="uemail" placeholder="Enter Email Here"> 
     </div>
-    <button type="submit" class="btn btn-warning" >Send Mail!</button> 
+    <button type="submit" class="btn btn-warning" >Send Mail!</button>
 </form>
+<form action='/emailme'>
+    <h3>OR</h3>
+    <button type="submit" class="btn btn-warning" >Send Mail at {{user.email}}</button> 
+    </form>
 {% endif %}
 <center><h3 style="font-family: 'Recursive', sans-serif;">Add a Task!</h3></center>
   

@@ -258,7 +258,9 @@ def user_logout(request):
 def emailme(request):
     if request.method == "POST":
         if request.user.is_authenticated:
+            uemail = request.POST.get("uemail")
             user = request.user
+            print(user.email)
             queryset = Todo.objects.filter(user_id=user.id).values().order_by('priority')
             total_str = ""
             global status
@@ -267,11 +269,33 @@ def emailme(request):
                     status = 'Pending'
                 if q['status'] == 'C':
                     status = 'Complete'
-                total_str = total_str + f"<tr><td>{q['title']}</td><td>{status}</td><td>{q['priority']}</td></tr>"
-            heading = "<html><table ><thead > <tr><th>Title</th><th>Status</th><th>Priority</th> </tr></thead> "
+                total_str = total_str + f"<tr><td style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;\">{q['title']}</td><td style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;\">{status}</td><td style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;\">{q['priority']}</td></tr>"
+            heading = f"<html><center><img src=\"https://github.com/kothawleprem/MOPS/blob/main/terna.png?raw=true\" alt=\"Terna Logo\"><h1>To-do</h1><table style=\"border: 1px solid black;border-collapse: collapse;border-spacing: 5px;\" ><thead > <tr><th style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;text-align: left;\">Title</th><th style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;text-align: left;\">Status</th><th style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;text-align: left;\">Priority</th> </tr></thead>"
             # print(todo)
-            uemail = request.POST.get("uemail")
-            html_content = heading+total_str+"</html>"
+            html_content = heading+total_str+f"</center><small>This To-do is sent by {user.username} ({user.email}) using <a href=\"http://mydailydriver.herokuapp.com/\">Daily Driver</a>.</small></html>"
+            print(uemail)
+            subject, from_email, to = 'Your Todo From Dailydriver has Arrived!!!', settings.EMAIL_HOST_USER,uemail
+            text_content = 'Chart Sent Successfully'
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+    else:
+        if request.user.is_authenticated:
+            user = request.user
+            uemail = user.email
+            print("check",user.email)
+            queryset = Todo.objects.filter(user_id=user.id).values().order_by('priority')
+            total_str = ""
+            
+            for q in queryset:
+                if q['status'] == 'P':
+                    status = 'Pending'
+                if q['status'] == 'C':
+                    status = 'Complete'
+                total_str = total_str + f"<tr><td style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;\">{q['title']}</td><td style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;\">{status}</td><td style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;\">{q['priority']}</td></tr>"
+            heading = f"<html><center><img src=\"https://github.com/kothawleprem/MOPS/blob/main/terna.png?raw=true\" alt=\"Terna Logo\"><h1>To-do</h1><table style=\"border: 1px solid black;border-collapse: collapse;border-spacing: 5px;\" ><thead > <tr><th style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;text-align: left;\">Title</th><th style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;text-align: left;\">Status</th><th style=\"border: 1px solid black;border-collapse: collapse;padding: 15px;text-align: left;\">Priority</th> </tr></thead>"
+            # print(todo)
+            html_content = heading+total_str+f"</center><small>This To-do is sent by You ({user.email}) using <a href=\"http://mydailydriver.herokuapp.com/\">Daily Driver</a>.</small></html>"
             print(uemail)
             subject, from_email, to = 'Your Todo From Dailydriver has Arrived!!!', settings.EMAIL_HOST_USER,uemail
             text_content = 'Chart Sent Successfully'
