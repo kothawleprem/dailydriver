@@ -14,6 +14,8 @@ from django.core.mail import EmailMultiAlternatives
 from ipstack import GeoLookup
 import requests
 
+from google_trans_new import google_translator
+translator = google_translator()
 
 from bs4 import BeautifulSoup
 
@@ -61,11 +63,21 @@ def home(request):
         part = json_data[0]
         display_name = part["display_name"]
         c_list = list(map(str,display_name.split(",")))
-        co = c_list[-1].strip()
-        country = co
+        co = c_list[-1].strip() 
+        country = translator.translate(co,lang_tgt='en').strip()
         print(country)
+        if "Ireland" in country:
+            country = "Ireland"
+        if "Morocco" in country:
+            country = "Morocco"
+        if "Belgium" in country:
+            country = "Belgium"
+        if "Inebria" in country:
+            country = "Bulgaria"
+        if "Hellas" in country:
+            country = "Greece"
         code = ""
-        mylist = [["United Arab Emirates","ae"],["United States", "us"],["Australia", "au"],  ["India", "in"],["Argentina","ar"], ["Austria","at"],["Beligum","be"], ["Bulgaria","bg"], ["Brazil","br"], ["Canada","ca"], ["China","cn"], ["Colombia","co"], ["Cuba","cu"], ["Czechia","cz"],["Egypt","eg"], ["France","fr"],["United Kingdom", "gb"], ["Greece","gr"], ["Hong Kong","hk"], ["Hungry","hu"], ["Indonesia","id"], ["Ireland","ie"], ["Israel","il"], ["Italy","it"], ["Japan","jp"], ["Korea","kr"], ["Lithuania","lt"], ["Latvia","lv"], ["Morocco","ma"], ["Mexico","mx"], ["Malaysia","my"], ["Nigeria","ng"], ["Netherlands","nl"], ["Norway","no"], ["New Zealand","nz"], ["Philippines","ph"], ["Poland","pl"], ["Portugal","pt"], ["Romania","ro"], ["rs"],  ["Rusia","ru"], ["Saudi Arabia","sa"], ["Sweden","se"], ["Singapore","sg"], ["Slovenia","si"], ["Slovakia","sk"], ["Thailand","th"], ["Turkey","tr"], ["Taiwan","tw"], ["Ukraine","ua"], ["Venezuela","ve"], ["South Africa","za"]]
+        mylist = [["The United Arab Emirates","ae"],["United States", "us"],["Australia", "au"],  ["India", "in"],["Argentina","ar"], ["Austria","at"],["Belgium","be"], ["Bulgaria","bg"], ["Brazil","br"], ["Canada","ca"], ["China","cn"], ["Colombia","co"], ["Cuba","cu"], ["Czechia","cz"],["Egypt","eg"], ["France","fr"],["United Kingdom", "gb"], ["Greece","gr"], ["Hong Kong","hk"], ["Hungary","hu"], ["Indonesia","id"], ["Ireland","ie"], ["Israel","il"], ["Italy","it"], ["Japan","jp"], ["Republic of Korea","kr"], ["Lithuania","lt"], ["Latvia","lv"], ["Morocco","ma"], ["Mexico","mx"], ["Malaysia","my"], ["Nigeria","ng"], ["Netherlands","nl"], ["Norway","no"], ["New Zealand","nz"], ["Philippines","ph"], ["Poland","pl"], ["Portugal","pt"], ["Romania","ro"], ["rs"],  ["Russia","ru"], ["Saudi Arabia","sa"], ["Sweden","se"], ["Singapore","sg"], ["Slovenia","si"], ["Slovakia","sk"], ["Thailand","th"], ["Turkey","tr"], ["Taiwan","tw"], ["Ukraine","ua"], ["Venezuela","ve"], ["South Africa","za"]]
 
         for i in range(len(mylist)+1):
         # print(mylist[i][0])
@@ -107,6 +119,14 @@ def home(request):
             country = "uk"
         if country == "United States":
             country = 'us'
+        if country == "The United Arab Emirates":
+            country = 'united-arab-emirates'
+        if country == 'Czechia':
+            country = "czech-republic"
+        if country == 'Republic of Korea':
+            country = "south-korea"
+        if country == 'South Africa':
+            country = 'south-africa'
 
         html_text = requests.get(f'https://www.worldometers.info/coronavirus/country/{country}').text
         soup = BeautifulSoup(html_text,'lxml')
