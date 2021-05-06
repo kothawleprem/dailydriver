@@ -95,7 +95,7 @@ def home(request):
             print(category)
         contents = []
         if len(code) == 2:
-            myapi = f"https://newsapi.org/v2/top-headlines?country={code}&category={category}&apiKey=147894c490b84cfaaf3b534cf5a39050"
+            myapi = f"https://newsapi.org/v2/top-headlines?country={code}&category={category}&apiKey=95336568b9a7490086201803ec8652e1"
             json_data = requests.get(myapi).json()
             articles = json_data["articles"]
             for article in articles:
