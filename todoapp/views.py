@@ -174,7 +174,61 @@ def home(request):
         url = "https://www.affirmations.dev/"
         myjson= requests.get(url).json()
         affirmation = myjson['affirmation']
+
+        terna = requests.get('https://ternaengg.ac.in/notice-board/').text
+        soup = BeautifulSoup(terna, 'lxml')
+        mytable = soup.find('table',class_='tbl4')
+        trs = mytable.find_all('tr')
+        notices = []
+        count_notice = 0
+        for tr in trs:
+            if count_notice == 5:
+                break
+            notice = []
+            tds = tr.find_all('td')
+            try:
+                date_notice = tds[0].text
+                notice.append(date_notice)
+                desc = tds[2].text
+                if "\n" in description:
+                    description_notice = desc.replace('\n','')
+                else:
+                    description_notice = "# " + desc
+                notice.append(description_notice)
+                link_notice = tds[2].a['href']
+                notice.append(link_notice)
+                notices.append(notice)
+                count_notice = count_notice + 1
+            except:
+                pass
         
+            hackerearth_text = requests.get('https://www.hackerearth.com/challenges/hackathon/').text
+            soup = BeautifulSoup(hackerearth_text, "html.parser")
+            section = soup.find_all('div',class_='challenge-card-modern')
+            hackerearth = []
+            for part in section:
+                hackerearth_section = []
+                try:
+                    link = part.find('a',class_='challenge-card-wrapper').get('href')
+                    if link == "None":
+                        break
+                    try:
+                        company = part.find('div',class_='company-details ellipsis').text
+                    except:
+                        company = "Not Available"
+                    name = part.find('span',class_='challenge-list-title challenge-card-wrapper').text
+                    reg = part.find('div',class_='registrations tool-tip align-left').text
+                    comp = ">" + company.strip()
+                    hackerearth_section.append(comp)
+                    registered = "#" + reg
+                    hackerearth_section.append(registered)
+                    name_hackathon =  name
+                    hackerearth_section.append(name_hackathon)
+                    hackerearth_section.append(link)
+                    hackerearth.append(hackerearth_section)
+                except:
+                    pass
+
         context = {
             'form' : form,
             'todos' : todos,
@@ -202,6 +256,9 @@ def home(request):
             'team2_score' : team2_score.strip(),
             'link' : link,
             'affirmation' : affirmation,
+            'notices' : notices,
+            'hackerearth' : hackerearth,
+
         }
         return render(request,'todoapp/index.html',context)
 
