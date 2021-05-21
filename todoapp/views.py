@@ -57,34 +57,39 @@ def home(request):
         pressure = json_data['main']['pressure']
         humidity = json_data['main']['humidity']
 #-------------------------------------------------------
-        myapi = f"https://nominatim.openstreetmap.org/search?city=<{city}>&format=json"
-        # From the api we get data.
-        json_data = requests.get(myapi).json()
-        part = json_data[0]
-        display_name = part["display_name"]
-        c_list = list(map(str,display_name.split(",")))
-        co = c_list[-1].strip() 
-        country = translator.translate(co,lang_tgt='en').strip()
-        print(country)
-        if "Ireland" in country:
-            country = "Ireland"
-        if "Morocco" in country:
-            country = "Morocco"
-        if "Belgium" in country:
-            country = "Belgium"
-        if "Inebria" in country:
-            country = "Bulgaria"
-        if "Hellas" in country:
-            country = "Greece"
-        code = ""
-        mylist = [["The United Arab Emirates","ae"],["United States", "us"],["Australia", "au"],  ["India", "in"],["Argentina","ar"], ["Austria","at"],["Belgium","be"], ["Bulgaria","bg"], ["Brazil","br"], ["Canada","ca"], ["China","cn"], ["Colombia","co"], ["Cuba","cu"], ["Czechia","cz"],["Egypt","eg"], ["France","fr"],["United Kingdom", "gb"], ["Greece","gr"], ["Hong Kong","hk"], ["Hungary","hu"], ["Indonesia","id"], ["Ireland","ie"], ["Israel","il"], ["Italy","it"], ["Japan","jp"], ["Republic of Korea","kr"], ["Lithuania","lt"], ["Latvia","lv"], ["Morocco","ma"], ["Mexico","mx"], ["Malaysia","my"], ["Nigeria","ng"], ["Netherlands","nl"], ["Norway","no"], ["New Zealand","nz"], ["Philippines","ph"], ["Poland","pl"], ["Portugal","pt"], ["Romania","ro"], ["rs"],  ["Russia","ru"], ["Saudi Arabia","sa"], ["Sweden","se"], ["Singapore","sg"], ["Slovenia","si"], ["Slovakia","sk"], ["Thailand","th"], ["Turkey","tr"], ["Taiwan","tw"], ["Ukraine","ua"], ["Venezuela","ve"], ["South Africa","za"]]
+        try:
+            myapi = f"https://nominatim.openstreetmap.org/search?city=<{city}>&format=json"
+            # From the api we get data.
+            json_data = requests.get(myapi).json()
+            part = json_data[0]
+            display_name = part["display_name"]
+            c_list = list(map(str,display_name.split(",")))
+            co = c_list[-1].strip() 
+            country = translator.translate(co,lang_tgt='en').strip()
+            print(country)
+            if "Ireland" in country:
+                country = "Ireland"
+            if "Morocco" in country:
+                country = "Morocco"
+            if "Belgium" in country:
+                country = "Belgium"
+            if "Inebria" in country:
+                country = "Bulgaria"
+            if "Hellas" in country:
+                country = "Greece"
+            code = ""
+            mylist = [["The United Arab Emirates","ae"],["United States", "us"],["Australia", "au"],  ["India", "in"],["Argentina","ar"], ["Austria","at"],["Belgium","be"], ["Bulgaria","bg"], ["Brazil","br"], ["Canada","ca"], ["China","cn"], ["Colombia","co"], ["Cuba","cu"], ["Czechia","cz"],["Egypt","eg"], ["France","fr"],["United Kingdom", "gb"], ["Greece","gr"], ["Hong Kong","hk"], ["Hungary","hu"], ["Indonesia","id"], ["Ireland","ie"], ["Israel","il"], ["Italy","it"], ["Japan","jp"], ["Republic of Korea","kr"], ["Lithuania","lt"], ["Latvia","lv"], ["Morocco","ma"], ["Mexico","mx"], ["Malaysia","my"], ["Nigeria","ng"], ["Netherlands","nl"], ["Norway","no"], ["New Zealand","nz"], ["Philippines","ph"], ["Poland","pl"], ["Portugal","pt"], ["Romania","ro"], ["rs"],  ["Russia","ru"], ["Saudi Arabia","sa"], ["Sweden","se"], ["Singapore","sg"], ["Slovenia","si"], ["Slovakia","sk"], ["Thailand","th"], ["Turkey","tr"], ["Taiwan","tw"], ["Ukraine","ua"], ["Venezuela","ve"], ["South Africa","za"]]
+      
 
-        for i in range(len(mylist)+1):
-        # print(mylist[i][0])
-            if country == mylist[i][0]:
-                code = mylist[i][1]
-                # print(code)
-                break
+            for i in range(len(mylist)+1):
+            # print(mylist[i][0])
+                if country == mylist[i][0]:
+                    code = mylist[i][1]
+                    # print(code)
+                    break
+        except:
+            country = "India"
+            code = "in"
 #----------------------------------------------------
         if user_category == '':
             category = 'general'
@@ -201,33 +206,7 @@ def home(request):
                 count_notice = count_notice + 1
             except:
                 pass
-        
-            hackerearth_text = requests.get('https://www.hackerearth.com/challenges/hackathon/').text
-            soup = BeautifulSoup(hackerearth_text, "html.parser")
-            section = soup.find_all('div',class_='challenge-card-modern')
-            hackerearth = []
-            for part in section:
-                hackerearth_section = []
-                try:
-                    link = part.find('a',class_='challenge-card-wrapper').get('href')
-                    if link == "None":
-                        break
-                    try:
-                        company = part.find('div',class_='company-details ellipsis').text
-                    except:
-                        company = "Not Available"
-                    name = part.find('span',class_='challenge-list-title challenge-card-wrapper').text
-                    reg = part.find('div',class_='registrations tool-tip align-left').text
-                    comp = ">" + company.strip()
-                    hackerearth_section.append(comp)
-                    registered = "#" + reg
-                    hackerearth_section.append(registered)
-                    name_hackathon =  name
-                    hackerearth_section.append(name_hackathon)
-                    hackerearth_section.append(link)
-                    hackerearth.append(hackerearth_section)
-                except:
-                    pass
+
 
         context = {
             'form' : form,
@@ -257,7 +236,6 @@ def home(request):
             'link' : link,
             'affirmation' : affirmation,
             'notices' : notices,
-            'hackerearth' : hackerearth,
 
         }
         return render(request,'todoapp/index.html',context)
